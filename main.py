@@ -3,6 +3,8 @@ import time
 import Util.planilha as p
 import Util.config as c
 
+def alt_tab():
+	pyautogui.hotkey('alt', 'tab')
 
 def ajustar_filial(filial):
 	# inputFilial
@@ -46,6 +48,9 @@ def main():
 	# Configurando tempo entre ações
 	global tempo_entre_acoes
 	tempo_entre_acoes = config_json.get('tempoEntreAcoes')
+
+	# TROCA DE JANELA DO WINDOWS
+	alt_tab()
 
 	# FAZENDO LEITURA DA NOVO PLANILHA E LIMPANDO DADOS DA PLANILHA RESULTADO
 	planilha = p.Planilha()  
