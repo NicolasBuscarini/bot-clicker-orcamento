@@ -21,7 +21,6 @@ def remover_caracteres_indesejados(nome_produto : str, caracteres_indesejados : 
 	''''
 		Remove caracteres indesejados do nome do produto
 	'''
-
 	if caracteres_indesejados != '':
 		for caracter in caracteres_indesejados:
 			nome_produto = nome_produto.replace(caracter, '')
