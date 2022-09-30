@@ -1,10 +1,18 @@
 import pyautogui
+import pyperclip
 import time
 import Util.planilha as p
 import Util.config as c
 
 def alt_tab():
 	pyautogui.hotkey('alt', 'tab')
+
+def get_clipboard():
+	'''
+		Copia o texto do clipboard
+	'''
+	pyautogui.hotkey('ctrl', 'c')
+	return pyperclip.paste()
 
 def ajustar_filial(filial : str):
 	'''
