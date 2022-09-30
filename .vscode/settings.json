@@ -5,6 +5,8 @@
         "indice",
         "nomeproduto",
         "orcamento",
-        "pyautogui"
+        "pyautogui",
+        "pyperclip",
+        "transferencia"
     ]
 }
