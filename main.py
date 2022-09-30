@@ -41,14 +41,7 @@ def iniciar_pesquisa_planilha(planilha):
 	for linha in planilha.df['Produto'].values:
 		pesquisar_produto(linha)
 
-def main():
-	# FAZENDO LEITURA DA CONFIGURAÇÃO%A
-	config_json = c.ConfigJson('config.json')
-
-	# Configurando tempo entre ações
-	global tempo_entre_acoes
-	tempo_entre_acoes = config_json.get('tempoEntreAcoes')
-
+def bot_orcamento(config_json):
 	# TROCA DE JANELA DO WINDOWS
 	alt_tab()
 
@@ -59,5 +52,21 @@ def main():
 	ajustar_filial(config_json.get('filial'))	
 
 	iniciar_pesquisa_planilha(planilha)
+
+def main():
+	# FAZENDO LEITURA DA CONFIGURAÇÃO%A
+	config_json = c.ConfigJson('config.json')
+
+	# Configurando tempo entre ações
+	global tempo_entre_acoes
+	tempo_entre_acoes = config_json.get('tempoEntreAcoes')
+
+	try:
+		bot_orcamento(config_json)
+	except Exception as e:
+		print("#"*50)
+		print('Erro ao executar o bot. Verifique se o programa está aberto e tente novamente.')
+		print(e)
+
 
 main()
