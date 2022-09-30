@@ -6,7 +6,10 @@ import Util.config as c
 def alt_tab():
 	pyautogui.hotkey('alt', 'tab')
 
-def ajustar_filial(filial):
+def ajustar_filial(filial : str):
+	'''
+		Ajusta a filial na tela do sistema
+	'''
 	# inputFilial
 	pyautogui.moveTo(417, 336)
 	pyautogui.click()
@@ -15,10 +18,16 @@ def ajustar_filial(filial):
 	time.sleep(tempo_entre_acoes)
 
 def concatenar_nome_produto(nome_produto):
+	'''
+		Concatena o nome do produto com '%' no começo para realizar pesquisa
+	'''
 	lista_palavras = nome_produto.split(' ')
 	return f'%{lista_palavras[-1]}'
 
 def pesquisar_produto(produto):
+	'''
+		Pesquisa o produto na tela do sistema
+	'''
 	nome_produto_concatenado = concatenar_nome_produto(produto)
 	
 	# inputProduto
@@ -33,15 +42,19 @@ def pesquisar_produto(produto):
 
 	time.sleep(tempo_entre_acoes)
 
-def iniciar_pesquisa_planilha(planilha):
+def iniciar_pesquisa_planilha(planilha: p.Planilha):
+	'''
+		Inicia a pesquisa na planilha de cada produto
+	'''
 	print('Iniciando pesquisa...')
-
-	print(planilha.df['Produto'].values)
 
 	for linha in planilha.df['Produto'].values:
 		pesquisar_produto(linha)
 
-def bot_orcamento(config_json):
+def bot_orcamento(config_json : c.ConfigJson):
+	'''
+		Executa o bot de orçamento
+	'''
 	# TROCA DE JANELA DO WINDOWS
 	alt_tab()
 
