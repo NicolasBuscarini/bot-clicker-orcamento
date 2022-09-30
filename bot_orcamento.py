@@ -109,9 +109,12 @@ class BotOrcamento:
         descricao_produto = self.get_clipboard()
 
         if descricao_produto == produto_planilha:
+            time.sleep(self.TEMPO_ENTRE_ACOES)
             return True
-        if descricao_produto == produto_anterior:
-            return False
             
+        if descricao_produto == produto_anterior:
+            time.sleep(self.TEMPO_ENTRE_ACOES)
+            return False
+
         pyautogui.hotkey('down')
         self.verificar_busca(produto_planilha, descricao_produto)
