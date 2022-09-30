@@ -1,4 +1,5 @@
 {
     "filial": "",
-    "tempoEntreAcoes": 0.3
+    "tempoEntreAcoes": 0.3,
+    "caracteresIndesejados": "!@#$%"
 }

@@ -17,18 +17,30 @@ def ajustar_filial(filial : str):
 
 	time.sleep(tempo_entre_acoes)
 
-def concatenar_nome_produto(nome_produto):
+def remover_caracteres_indesejados(nome_produto : str, caracteres_indesejados : str):
+	''''
+		Remove caracteres indesejados do nome do produto
 	'''
-		Concatena o nome do produto com '%' no começo para realizar pesquisa
-	'''
-	lista_palavras = nome_produto.split(' ')
-	return f'%{lista_palavras[-1]}'
 
-def pesquisar_produto(produto):
+	if caracteres_indesejados != '':
+		for caracter in caracteres_indesejados:
+			nome_produto = nome_produto.replace(caracter, '')
+	return nome_produto
+
+def concatenar_nome_produto(nome_produto : str, caracteres_indesejados : str):
+	'''
+		Concatena o nome do produto com '%' entre as palavras para realizar pesquisa
+	'''
+	remover_caracteres_indesejados(nome_produto, caracteres_indesejados)
+
+	produto_concatenado = nome_produto.replace(' ', '%')
+	return produto_concatenado
+
+def pesquisar_produto(produto : str, caracteres_indesejados : str):
 	'''
 		Pesquisa o produto na tela do sistema
 	'''
-	nome_produto_concatenado = concatenar_nome_produto(produto)
+	nome_produto_concatenado = concatenar_nome_produto(produto, caracteres_indesejados)
 	
 	# inputProduto
 	pyautogui.moveTo(660, 336)
@@ -42,14 +54,14 @@ def pesquisar_produto(produto):
 
 	time.sleep(tempo_entre_acoes)
 
-def iniciar_pesquisa_planilha(planilha: p.Planilha):
+def iniciar_pesquisa_planilha(planilha: p.Planilha, config_json: c.ConfigJson):
 	'''
 		Inicia a pesquisa na planilha de cada produto
 	'''
 	print('Iniciando pesquisa...')
 
 	for linha in planilha.df['Produto'].values:
-		pesquisar_produto(linha)
+		pesquisar_produto(linha, config_json.get('caracteresIndesejados'))
 
 def bot_orcamento(config_json : c.ConfigJson):
 	'''
@@ -64,7 +76,7 @@ def bot_orcamento(config_json : c.ConfigJson):
 	# Preenche campos de filial
 	ajustar_filial(config_json.get('filial'))	
 
-	iniciar_pesquisa_planilha(planilha)
+	iniciar_pesquisa_planilha(planilha, config_json)
 
 def main():
 	# FAZENDO LEITURA DA CONFIGURAÇÃO%A
@@ -80,6 +92,5 @@ def main():
 		print("#"*50)
 		print('Erro ao executar o bot. Verifique se o programa está aberto e tente novamente.')
 		print(e)
-
 
 main()
