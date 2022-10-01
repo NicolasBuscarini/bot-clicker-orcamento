@@ -1,6 +1,6 @@
 import json
 
-class ConfigJson :
+class Json :
     def __init__(self, path) :
         self.path = path
         self.config = self.read()
@@ -14,7 +14,10 @@ class ConfigJson :
             json.dump(self.config, f, indent=4)
 
     def get(self, key) :
-        return self.config[key]
+        try:
+            return self.config[key]
+        except KeyError:
+            return key
 
     def set(self, key, value) :
         self.config[key] = value

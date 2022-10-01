@@ -1,17 +1,20 @@
-import Util.config as c
+import Util.json as c
 import bot_orcamento as b
 
 def main():
 	# FAZENDO LEITURA DA CONFIGURAÇÃO
-	config_json = c.ConfigJson('config.json')
+	config_json = c.Json('config.json')
+
+	# FAZENDO LEITURA DO DICIONARIO DE PRODUTOS
+	DICIONARIO_PRODUTOS = c.Json('dicionario.json')
 
 	# Pegando dados do config.json
-	tempo_entre_acoes = config_json.get('tempoEntreAcoes')
-	caracteres_indesejados = config_json.get('caracteresIndesejados')
-	filial = config_json.get('filial')
+	TEMPO_ENTRE_ACOES = config_json.get('tempoEntreAcoes')
+	CARACTERES_INDESEJADOS = config_json.get('caracteresIndesejados')
+	FILIAL = config_json.get('filial')
 
 	try:
-		bot = b.BotOrcamento(tempo_entre_acoes, caracteres_indesejados, filial)
+		bot = b.BotOrcamento(TEMPO_ENTRE_ACOES, CARACTERES_INDESEJADOS, FILIAL, DICIONARIO_PRODUTOS)
 		bot.initialize()
 	except Exception as e:
 		print("#"*50)

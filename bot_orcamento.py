@@ -2,12 +2,14 @@ import pyautogui
 import pyperclip
 import time
 import Util.planilha as p
+import Util.json as c
 
 class BotOrcamento:
-    def __init__(self, tempo_entre_acoes, caracteres_indesejados, filial):
+    def __init__(self, tempo_entre_acoes, caracteres_indesejados, filial, dicionario_produtos: c.Json):
         self.TEMPO_ENTRE_ACOES = tempo_entre_acoes
         self.CARACTERES_INDESEJADOS = caracteres_indesejados
         self.FILIAL = filial
+        self.DICIONARIO_PRODUTOS = dicionario_produtos
 
     def initialize(self):
         '''
@@ -56,15 +58,22 @@ class BotOrcamento:
 
     def format_nome_produto(self, nome_produto : str, caracteres_indesejados : str):
         '''
-            Concatena o nome do produto com '%' entre as palavras para realizar pesquisa
-            Transforma em UPPER CASE
+            Concatena o nome do produto com '%' entre as palavras para realizar pesquisa\n
+            Transforma em UPPER CASE\n
+            Tenta converter cada palavra do produto para o nome do produto no sistema
         '''
         nome_produto = self.remover_caracteres_indesejados(nome_produto, caracteres_indesejados)
 
         nome_produto = nome_produto.upper()
 
-        produto_formatado = nome_produto.replace(' ', '%')
-        return produto_formatado
+        # Tenta converter cada palavra do produto para o nome do produto no sistema
+        lista_palavras = nome_produto.split(' ')
+        for idx, palavra in enumerate(lista_palavras):
+            resultado_dicionario = self.DICIONARIO_PRODUTOS.get(palavra)
+            lista_palavras[idx] = resultado_dicionario
+
+        nome_produto_concatenado = '%'.join(lista_palavras)
+        return nome_produto_concatenado
 
     def pesquisar_produto(self, produto : str, caracteres_indesejados : str):
         '''
