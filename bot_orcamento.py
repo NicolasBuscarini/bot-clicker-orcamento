@@ -90,8 +90,14 @@ class BotOrcamento:
         '''
         print('Iniciando pesquisa...')
 
+        linha: str
         for linha in planilha.df['Produto'].values:
             self.pesquisar_produto(linha, self.CARACTERES_INDESEJADOS)
+            self.selecionar_campo_descricao()
+            if self.verificar_busca(linha):
+                self.selecionar_produto()
+                planilha.escrever_planilha(linha)
+                print(f'Produto {linha} encontrado!')
 
     def selecionar_campo_descricao(self):
         '''
@@ -100,12 +106,10 @@ class BotOrcamento:
         pyautogui.moveTo(532, 404)
         pyautogui.click()
 
-    def verificar_busca(self, produto_planilha : str, produto_anterior : str):
+    def verificar_busca(self, produto_planilha : str, produto_anterior : str = '') -> bool:
         '''
-            Verifica se o produto foi encontrado
+            Função recursiva que verifica se o produto pesquisado é o mesmo que está na planilha
         '''
-        self.selecionar_campo_descricao()
-
         descricao_produto = self.get_clipboard()
 
         if descricao_produto == produto_planilha:
@@ -118,3 +122,17 @@ class BotOrcamento:
 
         pyautogui.hotkey('down')
         self.verificar_busca(produto_planilha, descricao_produto)
+
+    def selecionar_produto(self):
+        '''
+            Seleciona o produto na tela do sistema
+        '''
+        pyautogui.hotkey('left')
+        pyautogui.hotkey('left')
+        pyautogui.hotkey('left')
+        pyautogui.hotkey('left')
+        pyautogui.hotkey('enter')
+
+        pyautogui.hotkey('alt', 's')
+
+    
