@@ -43,6 +43,7 @@ class BotOrcamento:
         # inputFilial
         pyautogui.moveTo(417, 336)
         pyautogui.click()
+        pyautogui.click()
         pyautogui.write(self.FILIAL)  
 
         time.sleep(self.TEMPO_ENTRE_ACOES)
@@ -84,6 +85,7 @@ class BotOrcamento:
         # inputProduto
         pyautogui.moveTo(660, 336)
         pyautogui.click()
+        pyautogui.click()
         pyautogui.write(nome_produto_concatenado)
 
         time.sleep(self.TEMPO_ENTRE_ACOES)
@@ -120,7 +122,8 @@ class BotOrcamento:
             Função recursiva que verifica se o produto pesquisado é o mesmo que está na planilha
         '''
         descricao_produto = self.get_clipboard()
-
+        
+        produto_planilha.replace('%', ' ')
         if descricao_produto == produto_planilha:
             time.sleep(self.TEMPO_ENTRE_ACOES)
             return True
