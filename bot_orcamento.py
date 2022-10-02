@@ -5,7 +5,7 @@ import Util.planilha as p
 import Util.json as c
 
 class BotOrcamento:
-    def __init__(self, tempo_entre_acoes, caracteres_indesejados, filial, dicionario_produtos: c.Json):
+    def __init__(self, tempo_entre_acoes: float, caracteres_indesejados: str, filial: str, dicionario_produtos: c.Json):
         self.TEMPO_ENTRE_ACOES = tempo_entre_acoes
         self.CARACTERES_INDESEJADOS = caracteres_indesejados
         self.FILIAL = filial
@@ -124,7 +124,7 @@ class BotOrcamento:
         descricao_produto = self.get_clipboard()
         
         produto_planilha.replace('%', ' ')
-        if descricao_produto == produto_planilha:
+        if descricao_produto.__contains__(produto_planilha):
             time.sleep(self.TEMPO_ENTRE_ACOES)
             return True
             
