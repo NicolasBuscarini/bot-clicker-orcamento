@@ -55,4 +55,9 @@ class Planilha :
             print("#"*50)
             print("Permissão para editar o arquivo negada. Feche o arquivo e tente novamente.")
             print(e)
-
+    
+    def gerar_tabela_resultado(self):
+        '''
+            Gera tabela resultado
+        '''
+        self.resultado.to_excel('Excel/Resultado.xlsx')
