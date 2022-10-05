@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 import pyautogui
 import pyperclip
 import time
@@ -127,6 +128,12 @@ class BotOrcamento:
         '''
         produto = self.get_clipboard()
         
+        if produto == self.anterior or produto == '' or produto == NULL:
+            time.sleep(self.TEMPO_ENTRE_ACOES)
+            
+            self.planilha.adicionar_dados_tabela_resultado(produto, qtd_planilha, False)
+            return False
+        
         if produto != self.anterior :
             time.sleep(self.TEMPO_ENTRE_ACOES)
             self.selecionar_produto()
@@ -135,12 +142,6 @@ class BotOrcamento:
             self.planilha.adicionar_dados_tabela_resultado(produto, qtd_planilha, True)
             return True
             
-        if produto == self.anterior :
-            time.sleep(self.TEMPO_ENTRE_ACOES)
-            
-            self.planilha.adicionar_dados_tabela_resultado(produto, qtd_planilha, False)
-            return False
-
         pyautogui.hotkey('down')
         self.verificar_busca(produto_planilha, qtd_planilha)
 
