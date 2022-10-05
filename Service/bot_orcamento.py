@@ -2,16 +2,18 @@ from asyncio.windows_events import NULL
 import pyautogui
 import pyperclip
 import time
-import Service.planilha as p
-import Util.json as c
+from Model.componentes import Componentes
+from Service.planilha import Planilha
+from Util.json import Json
 
 class BotOrcamento:
-    def __init__(self, tempo_entre_acoes: float, caracteres_indesejados: str, filial: str, dicionario_produtos: c.Json):
+    def __init__(self, componentes, tempo_entre_acoes: float, caracteres_indesejados: str, filial: str, dicionario_produtos: Json):
+        self.COMPONENTES = Componentes(componentes)
         self.TEMPO_ENTRE_ACOES = tempo_entre_acoes
         self.CARACTERES_INDESEJADOS = caracteres_indesejados
         self.FILIAL = filial
         self.DICIONARIO_PRODUTOS = dicionario_produtos
-        self.planilha = p.Planilha() 
+        self.planilha = Planilha() 
         self.anterior = 'null'
 
     def initialize(self):
@@ -41,7 +43,7 @@ class BotOrcamento:
             Ajusta a filial na tela do sistema
         '''
         # inputFilial
-        pyautogui.moveTo(417, 336)
+        pyautogui.moveTo(self.COMPONENTES.input_filial['x'], self.COMPONENTES.input_filial['y'])
         pyautogui.click()
         pyautogui.click()
         pyautogui.write(self.FILIAL)  
@@ -83,7 +85,7 @@ class BotOrcamento:
         nome_produto_concatenado = self.format_nome_produto(produto, caracteres_indesejados)
         
         # inputProduto
-        pyautogui.moveTo(660, 336)
+        pyautogui.moveTo(self.COMPONENTES.input_descricao['x'], self.COMPONENTES.input_descricao['y'])
         pyautogui.click()
         pyautogui.click()
         pyautogui.write(nome_produto_concatenado)
@@ -95,7 +97,7 @@ class BotOrcamento:
 
         time.sleep(self.TEMPO_ENTRE_ACOES)
 
-    def iniciar_pesquisa_planilha(self, planilha: p.Planilha):
+    def iniciar_pesquisa_planilha(self, planilha: Planilha):
         '''
             Inicia a pesquisa na planilha de cada produto
         '''
@@ -119,7 +121,7 @@ class BotOrcamento:
         '''
             Seleciona o campo de descrição
         '''
-        pyautogui.moveTo(532, 404)
+        pyautogui.moveTo(self.COMPONENTES.column_descricao['x'], self.COMPONENTES.column_descricao['y'])
         pyautogui.click()
 
     def verificar_busca(self, produto_planilha : str, qtd_planilha: float) -> bool:

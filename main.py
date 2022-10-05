@@ -9,12 +9,13 @@ def main():
 	DICIONARIO_PRODUTOS = c.Json('Config/dicionario.json')
 
 	# Pegando dados do config.json
+	COMPONENTES = config_json.get('componentes')
 	TEMPO_ENTRE_ACOES = config_json.get('tempoEntreAcoes')
 	CARACTERES_INDESEJADOS = config_json.get('caracteresIndesejados')
 	FILIAL = config_json.get('filial')
 
 	try:
-		bot = b.BotOrcamento(TEMPO_ENTRE_ACOES, CARACTERES_INDESEJADOS, FILIAL, DICIONARIO_PRODUTOS)
+		bot = b.BotOrcamento(COMPONENTES, TEMPO_ENTRE_ACOES, CARACTERES_INDESEJADOS, FILIAL, DICIONARIO_PRODUTOS)
 		bot.initialize()
 	except Exception as e:
 		print("#"*50)
