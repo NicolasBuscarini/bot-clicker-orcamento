@@ -89,7 +89,7 @@ class BotOrcamento:
 
             return nome_produto_concatenado
         
-        self.converter_dicionario(produto)
+        produto = self.converter_dicionario(produto)
         nome_produto_concatenado = format_nome_produto(produto, caracteres_indesejados)
         
         # inputProduto
@@ -180,6 +180,23 @@ class BotOrcamento:
             if qtd == '000000' :
                 return False
             return True
+
+        pyautogui.hotkey('down')
+        pyautogui.hotkey('down')
+        pyautogui.hotkey('down')
+        pyautogui.hotkey('down')
+        pyautogui.hotkey('down')
+        pyautogui.hotkey('down')
+        pyautogui.hotkey('down')
+        pyautogui.hotkey('down')
+        pyautogui.hotkey('down')
+        pyautogui.hotkey('down')
+        pyautogui.hotkey('down')
+        pyautogui.hotkey('down')
+        pyautogui.hotkey('down')
+        pyautogui.hotkey('down')
+        pyautogui.hotkey('down')
+        pyautogui.hotkey('down')
 
         clipboard = self.get_clipboard()
         if clipboard == "" or clipboard == None:
