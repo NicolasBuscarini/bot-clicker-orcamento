@@ -6,7 +6,7 @@ class Json :
         self.config = self.read()
 
     def read(self) :
-        with open(self.path, 'r') as f :
+        with open(self.path, 'r', encoding='utf-8') as f :
             return json.load(f)
 
     def write(self) :
