@@ -1,4 +1,3 @@
-from asyncio.windows_events import NULL
 import pyautogui
 import pyperclip
 import time
@@ -19,6 +18,8 @@ class BotOrcamento:
         self.descricao_atual = 'null'
         self.produto_anterior = 'null'
         self.descricao_anterior = 'null'
+        self.quantidade_atual = 'null'
+        self.lista_produtos = []
 
     def initialize(self):
         '''
@@ -52,30 +53,7 @@ class BotOrcamento:
         pyautogui.click()
         pyautogui.write(self.FILIAL)  
 
-        time.sleep(self.TEMPO_ENTRE_ACOES)
-
-    def remover_caracteres_indesejados(self, nome_produto : str, caracteres_indesejados : str):
-        ''''
-            Remove caracteres indesejados do nome do produto
-        '''
-        if caracteres_indesejados != '':
-            for caracter in caracteres_indesejados:
-                nome_produto = nome_produto.replace(caracter, '')
-        return nome_produto
-
-    def format_nome_produto(self, nome_produto : str, caracteres_indesejados : str):
-        '''
-            Remover caracteres indesejados
-            Concatena o nome do produto com '%' entre as palavras para realizar pesquisa\n
-            Transforma em UPPER CASE\n
-        '''
-        nome_produto = self.remover_caracteres_indesejados(nome_produto, caracteres_indesejados)
-
-        nome_produto = nome_produto.upper()
-
-        nome_produto_concatenado = nome_produto.replace(" ", "%")
-
-        return nome_produto_concatenado
+        time.sleep(self.TEMPO_ENTRE_ACOES)    
 
     def converter_dicionario(self, produto: str) :
         ''''
@@ -87,17 +65,38 @@ class BotOrcamento:
     def pesquisar_produto(self, produto : str, caracteres_indesejados : str):
         '''
             Pesquisa o produto na tela do sistema
-        '''
+        '''        
+        def format_nome_produto(nome_produto : str, caracteres_indesejados : str):
+            '''
+                Remover caracteres indesejados
+                Concatena o nome do produto com '%' entre as palavras para realizar pesquisa\n
+                Transforma em UPPER CASE\n
+            '''
+            def remover_caracteres_indesejados(nome_produto : str, caracteres_indesejados : str):
+                ''''
+                    Remove caracteres indesejados do nome do produto
+                '''
+                if caracteres_indesejados != '':
+                    for caracter in caracteres_indesejados:
+                        nome_produto = nome_produto.replace(caracter, '')
+                return nome_produto
+
+            nome_produto = remover_caracteres_indesejados(nome_produto, caracteres_indesejados)
+
+            nome_produto = nome_produto.upper()
+
+            nome_produto_concatenado = nome_produto.replace(" ", "%")
+
+            return nome_produto_concatenado
+        
         self.converter_dicionario(produto)
-        nome_produto_concatenado = self.format_nome_produto(produto, caracteres_indesejados)
+        nome_produto_concatenado = format_nome_produto(produto, caracteres_indesejados)
         
         # inputProduto
         pyautogui.moveTo(self.COMPONENTES.input_descricao['x'], self.COMPONENTES.input_descricao['y'])
         pyautogui.click()
         pyautogui.click()
         pyautogui.write(nome_produto_concatenado)
-
-        time.sleep(self.TEMPO_ENTRE_ACOES)
 
         # btnPesquisar
         pyautogui.hotkey('alt', 'p')
@@ -134,37 +133,61 @@ class BotOrcamento:
         '''
             Função recursiva que verifica se o produto pesquisado é o mesmo que está na planilha
         '''
+        def selecionar_produto():
+            '''
+                Seleciona o produto na tela do sistema
+            '''
+            pyautogui.hotkey('left')
+            pyautogui.hotkey('left')
+            pyautogui.hotkey('left')
+            pyautogui.hotkey('enter')
+            pyautogui.hotkey('alt', 's')
+
         self.descricao_atual = self.get_clipboard()
         pyautogui.hotkey('left')
         self.produto_atual = self.get_clipboard()
         
-        if self.produto_atual == self.produto_anterior or self.produto_atual == '' or self.produto_atual == NULL:
-            time.sleep(self.TEMPO_ENTRE_ACOES)
-            
+        if self.produto_atual == self.produto_anterior or self.produto_atual == '' or self.produto_atual == None:            
             self.planilha.adicionar_dados_tabela_resultado(produto_planilha, qtd_planilha, False)
             return False
         
         if self.produto_atual != self.produto_anterior :
+            if not self.encontrar_produto_quantidade_certa():
+                return False
+
+            selecionar_produto()
             time.sleep(self.TEMPO_ENTRE_ACOES)
-            self.selecionar_produto()
+
             self.produto_anterior = self.produto_atual
             self.descricao_anterior = self.descricao_atual
 
-            self.planilha.adicionar_dados_tabela_resultado(produto_planilha, qtd_planilha, True)
+            self.planilha.adicionar_dados_tabela_resultado(produto_planilha, qtd_planilha, True, self.descricao_atual)
             return True
             
         pyautogui.hotkey('down')
         self.verificar_busca(produto_planilha, qtd_planilha)
-
-    def selecionar_produto(self):
-        '''
-            Seleciona o produto na tela do sistema
-        '''
-        pyautogui.hotkey('left')
-        pyautogui.hotkey('left')
-        pyautogui.hotkey('left')
-        pyautogui.hotkey('enter')
-
-        pyautogui.hotkey('alt', 's')
-
     
+
+    def encontrar_produto_quantidade_certa(self) :
+        '''
+            procura o primeiro produto diferente de 000000
+        '''
+        def verifica_produto_valido(p : str) :
+            '''
+                Verifica se produto é 000000
+            '''
+            qtd = p[1].replace(" ", "")
+            if qtd == '000000' :
+                return False
+            return True
+
+        clipboard = self.get_clipboard()
+        if clipboard == "" or clipboard == None:
+            return False
+        
+        p = clipboard.split('.')
+        if not (verifica_produto_valido(p)) :
+            pyautogui.hotkey('down')
+            self.encontrar_produto_quantidade_certa()
+
+        return True

@@ -38,7 +38,8 @@ class Planilha :
             self.headers = {
                 'Produto':[],
                 'Qtd':[],
-                'Encontrou':[]
+                'Encontrou':[],
+                'NomeEncontrado': []
             }
             self.resultado = pd.DataFrame(self.headers)
             self.resultado.to_excel(self.PATH_RESULTADO)
@@ -47,12 +48,12 @@ class Planilha :
             print("Permissão para editar o arquivo negada. Feche o arquivo e tente novamente.")
             print(e)
 
-    def adicionar_dados_tabela_resultado(self, produto, qtd, encontrou) :
+    def adicionar_dados_tabela_resultado(self, produto, qtd, encontrou, nome_encontrado = '') :
         '''
             Adiciona os dados na tabela de Resultado
         '''
         try :
-            self.resultado.loc[len(self.resultado)] = [produto, qtd, encontrou]
+            self.resultado.loc[len(self.resultado)] = [produto, qtd, encontrou, nome_encontrado]
             self.resultado.to_excel(self.PATH_RESULTADO)
         except PermissionError as e:
             print("#"*50)
