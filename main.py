@@ -1,12 +1,12 @@
 import Util.json as c
-import bot_orcamento as b
+import Service.bot_orcamento as b
 
 def main():
 	# FAZENDO LEITURA DA CONFIGURAÇÃO
-	config_json = c.Json('config.json')
+	config_json = c.Json('Config/config.json')
 
 	# FAZENDO LEITURA DO DICIONARIO DE PRODUTOS
-	DICIONARIO_PRODUTOS = c.Json('dicionario.json')
+	DICIONARIO_PRODUTOS = c.Json('Config/dicionario.json')
 
 	# Pegando dados do config.json
 	TEMPO_ENTRE_ACOES = config_json.get('tempoEntreAcoes')

@@ -1,7 +1,7 @@
 import pyautogui
 import pyperclip
 import time
-import Util.planilha as p
+import Service.planilha as p
 import Util.json as c
 
 class BotOrcamento:
@@ -10,21 +10,20 @@ class BotOrcamento:
         self.CARACTERES_INDESEJADOS = caracteres_indesejados
         self.FILIAL = filial
         self.DICIONARIO_PRODUTOS = dicionario_produtos
+        self.planilha = p.Planilha() 
+        self.anterior = 'null'
 
     def initialize(self):
         '''
             Executa o bot de orçamento
         '''
         # TROCA DE JANELA DO WINDOWS
-        self.alt_tab()
-
-        # FAZENDO LEITURA DA NOVO PLANILHA E LIMPANDO DADOS DA PLANILHA RESULTADO
-        planilha = p.Planilha()  
+        self.alt_tab()         
 
         # Preenche campos de filial
         self.ajustar_filial()	
 
-        self.iniciar_pesquisa_planilha(planilha)
+        self.iniciar_pesquisa_planilha(self.planilha)
         
     def alt_tab(self):
         pyautogui.hotkey('alt', 'tab')
@@ -101,14 +100,19 @@ class BotOrcamento:
         '''
         print('Iniciando pesquisa...')
 
-        linha: str
-        for linha in planilha.df['Produto'].values:
-            self.pesquisar_produto(linha, self.CARACTERES_INDESEJADOS)
+        for linha in planilha.df.values:
+            print(str('Pesquisando produto: ' + linha[0] + ' Quantidade: ') + str(linha[1]))
+
+            self.pesquisar_produto(linha[0], self.CARACTERES_INDESEJADOS)
             self.selecionar_campo_descricao()
-            if self.verificar_busca(linha):
-                self.selecionar_produto()
-                planilha.escrever_planilha(linha)
-                print(f'Produto {linha} encontrado!')
+            pyautogui.hotkey('left')
+
+            if self.verificar_busca(linha[0], linha[1]):
+                print(f'Produto {linha[0]} encontrado!')
+            else:
+                print(f'Produto {linha[0]} não encontrado!')
+
+        print('Pesquisa finalizada!')
 
     def selecionar_campo_descricao(self):
         '''
@@ -117,29 +121,33 @@ class BotOrcamento:
         pyautogui.moveTo(532, 404)
         pyautogui.click()
 
-    def verificar_busca(self, produto_planilha : str, produto_anterior : str = '') -> bool:
+    def verificar_busca(self, produto_planilha : str, qtd_planilha: float) -> bool:
         '''
             Função recursiva que verifica se o produto pesquisado é o mesmo que está na planilha
         '''
-        descricao_produto = self.get_clipboard()
+        produto = self.get_clipboard()
         
-        produto_planilha.replace('%', ' ')
-        if descricao_produto.__contains__(produto_planilha):
+        if produto != self.anterior :
             time.sleep(self.TEMPO_ENTRE_ACOES)
+            self.selecionar_produto()
+            self.anterior = produto
+
+            self.planilha.adicionar_dados_tabela_resultado(produto, qtd_planilha, True)
             return True
             
-        if descricao_produto == produto_anterior:
+        if produto == self.anterior :
             time.sleep(self.TEMPO_ENTRE_ACOES)
+            
+            self.planilha.adicionar_dados_tabela_resultado(produto, qtd_planilha, False)
             return False
 
         pyautogui.hotkey('down')
-        self.verificar_busca(produto_planilha, descricao_produto)
+        self.verificar_busca(produto_planilha, qtd_planilha)
 
     def selecionar_produto(self):
         '''
             Seleciona o produto na tela do sistema
         '''
-        pyautogui.hotkey('left')
         pyautogui.hotkey('left')
         pyautogui.hotkey('left')
         pyautogui.hotkey('left')
