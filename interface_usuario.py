@@ -4,7 +4,7 @@ from pywebio.output import put_text
 
 def bmi():
     FILIAL = input("Digite a FILIAL：", type=NUMBER)
-    ok = input("Deixe a tela de selecionar itens para orçamento em segundo plano", type=NUMBER)
+    put_text("teste")
 
 if __name__ == '__main__':
     bmi()

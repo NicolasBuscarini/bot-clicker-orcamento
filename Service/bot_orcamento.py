@@ -18,9 +18,6 @@ class BotOrcamento:
         self.produto_atual = 'null'
         self.descricao_atual = 'null'
         self.produto_anterior = 'null'
-        self.descricao_anterior = 'null'
-        self.quantidade_atual = 'null'
-        self.lista_produtos = []
 
     def initialize(self):
         '''
@@ -30,10 +27,9 @@ class BotOrcamento:
         try :
             pygetwindow.getWindowsWithTitle('PROTHEUS')[0].activate()
         except IndexError:
-            print('Janela do PROTHEUS não encontrada!')
-            exit()
+            raise IndexError('Não foi possível encontrar a janela do PROTHEUS. Verifique se a janela está aberta.')
         # self.alt_tab()
-        
+
         # Preenche campos de filial
         self.ajustar_filial()	
 
@@ -165,7 +161,6 @@ class BotOrcamento:
             time.sleep(self.TEMPO_ENTRE_ACOES)
 
             self.produto_anterior = self.produto_atual
-            self.descricao_anterior = self.descricao_atual
 
             self.planilha.adicionar_dados_tabela_resultado(produto_planilha, qtd_planilha, True, self.descricao_atual)
             return True
