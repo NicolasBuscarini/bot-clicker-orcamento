@@ -5,7 +5,7 @@ Bot para automatizar o preenchimento de formulários de orçamento dentro de um 
 *Não há nada que um humano possa fazer que um computador não consiga, e da mesma maneira não há nada que um computador faça que um humano não consiga. A diferença é a velocidade de processamento e de memoria.*
 ## Como rodar o projeto
 
-- <a href="#instalar-python-!">É necessario ter o python instalado na maquina.</a>
+- <a href="#instalar-python-">É necessario ter o python instalado na maquina.</a>
 - Execute o .bat para instalar as dependencias: `/bot/instalar.bat`.
 - Mantenha o PROTHEUS aberto na tela de orçamento.
 - Execute o .bat para rodar o projeto: `./executar.bat`.
@@ -22,8 +22,8 @@ Bot para automatizar o preenchimento de formulários de orçamento dentro de um 
 
 Um guia rápido para instalar o Python em diferentes sistemas operacionais.
 
-1. <a href="#windows-!">Instalar no Windows</a>.
-2. <a href="#linux-!">Instalar no Linux</a>.
+1. <a href="#windows-">Instalar no Windows</a>.
+2. <a href="#linux-">Instalar no Linux</a>.
 
 ### Windows !<img src=".README_images/34140973.png" alt="drawing" style="width:40px; margin-left: 20px;"/>
 
