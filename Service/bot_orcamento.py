@@ -1,6 +1,7 @@
 import pyautogui
 import pyperclip
 import time
+import pygetwindow
 from Model.componentes import Componentes
 from Service.planilha import Planilha
 from Util.json import Json
@@ -26,8 +27,13 @@ class BotOrcamento:
             Executa o bot de orçamento
         '''
         # TROCA DE JANELA DO WINDOWS
-        self.alt_tab()         
-
+        try :
+            pygetwindow.getWindowsWithTitle('PROTHEUS')[0].activate()
+        except IndexError:
+            print('Janela do PROTHEUS não encontrada!')
+            exit()
+        # self.alt_tab()
+        
         # Preenche campos de filial
         self.ajustar_filial()	
 

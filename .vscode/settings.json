@@ -5,7 +5,9 @@
         "indice",
         "nomeproduto",
         "orcamento",
+        "PROTHEUS",
         "pyautogui",
+        "pygetwindow",
         "pyperclip",
         "transferencia"
     ]
