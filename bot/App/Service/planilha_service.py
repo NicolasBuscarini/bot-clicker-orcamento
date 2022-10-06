@@ -2,14 +2,14 @@ import pandas as pd
 
 
 class Planilha:
-    def __init__(self):
+    def __init__(self, path_execucao: str, path_resultado: str):
         """
             Inicializa a planilha leitura da tabela Execucao e limpa tabela de Resultado criando uma nova
         """
         self.resultado = None
         self.headers = None
-        self.PATH_RESULTADO = 'Excel/Resultado.xlsx'
-        self.PATH_EXECUCAO = 'Excel/Execucao.xlsx'
+        self.path_resultado = path_resultado
+        self.path_execucao = path_execucao
 
         self.df = self.ler_dados()
         self.criar_nova_tabela_resultado()
@@ -18,7 +18,7 @@ class Planilha:
         """
             Lê os dados da tabela Execucao
         """
-        df = pd.read_excel(self.PATH_EXECUCAO)
+        df = pd.read_excel(self.path_execucao)
         return df
 
     def get_nome_produto(self, indice):
@@ -45,7 +45,7 @@ class Planilha:
                 'NomeEncontrado': []
             }
             self.resultado = pd.DataFrame(self.headers)
-            self.resultado.to_excel(self.PATH_RESULTADO)
+            self.resultado.to_excel(self.path_resultado)
         except PermissionError as e:
             print("#" * 50)
             print("Permissão para editar o arquivo negada. Feche o arquivo e tente novamente.")
@@ -57,7 +57,7 @@ class Planilha:
         """
         try:
             self.resultado.loc[len(self.resultado)] = [produto, qtd, encontrou, nome_encontrado]
-            self.resultado.to_excel(self.PATH_RESULTADO)
+            self.resultado.to_excel(self.path_resultado)
         except PermissionError as e:
             print("#" * 50)
             print("Permissão para editar o arquivo negada. Feche o arquivo e tente novamente.")
@@ -67,4 +67,4 @@ class Planilha:
         """
             Gera tabela resultado
         """
-        self.resultado.to_excel(self.PATH_RESULTADO)
+        self.resultado.to_excel(self.path_resultado)

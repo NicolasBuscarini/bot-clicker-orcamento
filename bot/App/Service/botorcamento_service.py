@@ -4,20 +4,20 @@ import pyautogui
 import pygetwindow
 import pyperclip
 
-from bot.Model.componentes import Componentes
-from bot.Service.planilha import Planilha
-from bot.Util.json_util import JsonUtil
+from bot.App.Model.componentes_model import Componentes
+from bot.App.Service.planilha_service import Planilha
+from bot.App.Util.json_util import JsonUtil
 
 
 class BotOrcamento:
     def __init__(self, componentes, tempo_entre_acoes: float, caracteres_indesejados: str, filial: str,
-                 dicionario_produtos: JsonUtil):
+                 dicionario_produtos: JsonUtil, path_planilha_execucao: str, path_planilha_resultado: str):
         self.COMPONENTES = Componentes(componentes)
         self.TEMPO_ENTRE_ACOES = tempo_entre_acoes
         self.CARACTERES_INDESEJADOS = caracteres_indesejados
         self.FILIAL = filial
         self.DICIONARIO_PRODUTOS = dicionario_produtos
-        self.planilha = Planilha()
+        self.planilha = Planilha(path_planilha_execucao, path_planilha_resultado)
 
         self.produto_atual = 'null'
         self.descricao_atual = 'null'
