@@ -152,7 +152,7 @@ class BotOrcamento:
             return False
         
         if self.produto_atual != self.produto_anterior :
-            if not self.encontrar_produto_quantidade_certa():
+            if not self.encontrar_produto_quantidade_menor():
                 return False
 
             selecionar_produto()
@@ -168,43 +168,63 @@ class BotOrcamento:
         self.verificar_busca(produto_planilha, qtd_planilha)
     
 
-    def encontrar_produto_quantidade_certa(self) :
+    # def encontrar_produto_quantidade_certa(self) :
+    #     '''
+    #         procura o primeiro produto diferente de 000000
+    #     '''
+    #     def verifica_produto_valido(p : str) :
+    #         '''
+    #             Verifica se produto é 000000
+    #         '''
+    #         qtd = p[1].replace(" ", "")
+    #         if qtd == '000000' :
+    #             return False
+    #         return True
+
+    #     pyautogui.hotkey('down')
+
+    #     clipboard = self.get_clipboard()
+    #     if clipboard == "" or clipboard == None:
+    #         return False
+        
+    #     p = clipboard.split('.')
+    #     if not (verifica_produto_valido(p)) :
+    #         pyautogui.hotkey('down')
+    #         self.encontrar_produto_quantidade_certa()
+    #     return True
+
+    def encontrar_produto_quantidade_menor(self, index : int = 0, anterior : str = "null", contador_repetidos = 0, dict_menor_valor : dict = None) :
         '''
-            procura o primeiro produto diferente de 000000
+            procura o produto com quantidade menor
         '''
-        def verifica_produto_valido(p : str) :
-            '''
-                Verifica se produto é 000000
-            '''
-            qtd = p[1].replace(" ", "")
-            if qtd == '000000' :
-                return False
+        # passou por todos os produtos e vai selecionar com a menor quantidade
+        if contador_repetidos == 6 :
+            for _ in range(0, index +1) :
+                pyautogui.hotkey('up')
+            for _ in range(0, dict_menor_valor[0]) :
+                pyautogui.hotkey('down')
             return True
 
-        pyautogui.hotkey('down')
-        pyautogui.hotkey('down')
-        pyautogui.hotkey('down')
-        pyautogui.hotkey('down')
-        pyautogui.hotkey('down')
-        pyautogui.hotkey('down')
-        pyautogui.hotkey('down')
-        pyautogui.hotkey('down')
-        pyautogui.hotkey('down')
-        pyautogui.hotkey('down')
-        pyautogui.hotkey('down')
-        pyautogui.hotkey('down')
-        pyautogui.hotkey('down')
-        pyautogui.hotkey('down')
-        pyautogui.hotkey('down')
-        pyautogui.hotkey('down')
+        if dict_menor_valor is None:
+            dict_menor_valor = dict()        
 
         clipboard = self.get_clipboard()
+        
         if clipboard == "" or clipboard == None:
+            print('Algo deu errado, não foi possível encontrar o produto com menor quantidade. Favor revisar.')
             return False
         
-        p = clipboard.split('.')
-        if not (verifica_produto_valido(p)) :
+        if clipboard == anterior and contador_repetidos < 6:
             pyautogui.hotkey('down')
-            self.encontrar_produto_quantidade_certa()
+            index += 1
+            contador_repetidos += 1
+            self.encontrar_produto_quantidade_menor(index, clipboard, contador_repetidos)
 
-        return True
+        p = clipboard.split('.')
+        qtd = int(p[1])
+        if qtd < dict_menor_valor[1]:
+            dict_menor_valor[0] = index
+            dict_menor_valor[1] = qtd
+
+        pyautogui.hotkey('down')
+        self.encontrar_produto_quantidade_menor(index, clipboard, 0)
