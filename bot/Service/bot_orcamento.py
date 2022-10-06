@@ -4,9 +4,9 @@ import pyautogui
 import pygetwindow
 import pyperclip
 
-from Model.componentes import Componentes
-from Service.planilha import Planilha
-from Util.json_util import Json
+from bot.Model.componentes import Componentes
+from bot.Service.planilha import Planilha
+from bot.Util.json_util import Json
 
 
 class BotOrcamento:
