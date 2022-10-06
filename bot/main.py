@@ -1,14 +1,14 @@
-import Util.json_util as c
-import Service.bot_orcamento as b
-from interfaceusuario import InterfaceUsuario
+from bot.Service.bot_orcamento import BotOrcamento
+from bot.Util.json_util import JsonUtil
+from bot.interfaceusuario import InterfaceUsuario
 
 
 def main():
 	# FAZENDO LEITURA DA CONFIGURAÇÃO
-	config_json = c.Json('Config/config.json')
+	config_json = JsonUtil('Config/config.json')
 
 	# FAZENDO LEITURA DO DICIONARIO DE PRODUTOS
-	dicionario_produtos = c.Json('Config/dicionario.json')
+	dicionario_produtos = JsonUtil('Config/dicionario.json')
 
 	# Pegando dados do config.json
 	componentes = config_json.get('componentes')
@@ -20,7 +20,7 @@ def main():
 
 	# INICIANDO BOT
 	try:
-		bot = b.BotOrcamento(componentes, tempo_entre_acoes, caracteres_indesejados, filial, dicionario_produtos)
+		bot = BotOrcamento(componentes, tempo_entre_acoes, caracteres_indesejados, filial, dicionario_produtos)
 		bot.initialize()
 	except Exception as e:
 		InterfaceUsuario.error(e)

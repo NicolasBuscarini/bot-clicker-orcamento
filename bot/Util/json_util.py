@@ -1,7 +1,7 @@
 import json as native_json
 
 
-class Json:
+class JsonUtil:
     def __init__(self, path):
         self.path = path
         self.config = self.read()

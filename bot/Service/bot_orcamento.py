@@ -6,12 +6,12 @@ import pyperclip
 
 from bot.Model.componentes import Componentes
 from bot.Service.planilha import Planilha
-from bot.Util.json_util import Json
+from bot.Util.json_util import JsonUtil
 
 
 class BotOrcamento:
     def __init__(self, componentes, tempo_entre_acoes: float, caracteres_indesejados: str, filial: str,
-                 dicionario_produtos: Json):
+                 dicionario_produtos: JsonUtil):
         self.COMPONENTES = Componentes(componentes)
         self.TEMPO_ENTRE_ACOES = tempo_entre_acoes
         self.CARACTERES_INDESEJADOS = caracteres_indesejados

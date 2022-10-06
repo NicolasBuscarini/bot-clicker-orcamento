@@ -1,7 +1,8 @@
 # A simple script to calculate BMI
 from pywebio.input import input as inp, NUMBER, file_upload
 from pywebio.output import put_text, clear, toast, use_scope
-from Util.json_util import Json
+
+from Util.json_util import JsonUtil
 
 
 class InterfaceUsuario:
@@ -9,7 +10,7 @@ class InterfaceUsuario:
     @staticmethod
     def initial(*, error_message=None):
         """Initial interface"""
-        json = Json('Config/config.json')
+        json = JsonUtil('Config/config.json')
         InterfaceUsuario.ask_filial(json)
 
         InterfaceUsuario.ask_file()
@@ -18,7 +19,7 @@ class InterfaceUsuario:
         put_text("Para interromper o bot mova o mouse para um dos cantos da tela.")
 
     @staticmethod
-    def ask_filial(json: Json):
+    def ask_filial(json: JsonUtil):
         """Ask filial"""
         with use_scope('scope_filial'):
             filial = inp("Digite a FILIAL：", type=NUMBER)
