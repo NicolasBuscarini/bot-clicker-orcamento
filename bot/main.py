@@ -23,7 +23,6 @@ def main():
 
     interface_grafica = InterfaceUsuario(path_config=PATH_CONFIG, path_planilha_execucao=PATH_PLANILHA_EXECUCAO,
                                          path_planilha_resultado=PATH_PLANILHA_RESULTADO)
-    interface_grafica.final()
     interface_grafica.initial()
 
     # INICIANDO BOT
@@ -37,7 +36,6 @@ def main():
         print("#" * 50)
         print('Erro ao executar o bot. Verifique se o programa está aberto e tente novamente.')
         print(e)
-
 
 
 if __name__ == '__main__':
