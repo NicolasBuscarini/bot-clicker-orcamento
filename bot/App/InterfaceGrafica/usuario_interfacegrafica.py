@@ -18,7 +18,8 @@ class InterfaceUsuario:
 
         self.ask_file()
 
-        put_text("O bot irá iniciar... Não utilize seu teclado nem mouse até que o bot termine.")
+        put_text("O bot irá iniciar... Mantenha está janela aberta e não utilize seu teclado nem mouse até que o bot "
+                 "termine.")
         put_text("Para interromper o bot mova o mouse para um dos cantos da tela.")
 
     @staticmethod
@@ -67,5 +68,6 @@ class InterfaceUsuario:
            :param e: Exception
            :return: None
         """
+        put_text(" ")
         put_text("Erro ao executar o bot. Verifique se o programa está aberto e tente novamente.")
         put_text(e)

@@ -1,3 +1,5 @@
+import time
+
 from bot.App.Service.botorcamento_service import BotOrcamento
 from bot.App.Util.json_util import JsonUtil
 from bot.App.InterfaceGrafica.usuario_interfacegrafica import InterfaceUsuario
@@ -24,6 +26,7 @@ def main():
     interface_grafica = InterfaceUsuario(path_config=PATH_CONFIG, path_planilha_execucao=PATH_PLANILHA_EXECUCAO,
                                          path_planilha_resultado=PATH_PLANILHA_RESULTADO)
     interface_grafica.initial()
+    time.sleep(3)
 
     # INICIANDO BOT
     try:
