@@ -1,5 +1,5 @@
 {
-    "filial": "0101",
+    "filial": 212121212121,
     "tempoEntreAcoes": 5,
     "caracteresIndesejados": "!@#$%/",
     "componentes": {
@@ -10,8 +10,8 @@
         "inputDescricao": {
             "x": 590,
             "y": 292
-        }, 
-        "columnDescricao" : {
+        },
+        "columnDescricao": {
             "x": 495,
             "y": 373
         }
