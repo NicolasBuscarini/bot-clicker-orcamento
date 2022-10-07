@@ -1,6 +1,6 @@
 import time
 
-from pywebio.input import input as inp, NUMBER, file_upload
+from pywebio.input import input as inp, NUMBER, TEXT, file_upload
 from pywebio.output import put_text, clear, toast, use_scope, put_file
 
 from App.Util.json_util import JsonUtil
@@ -29,13 +29,13 @@ class InterfaceUsuario:
     def ask_filial(json: JsonUtil):
         """Ask filial"""
         with use_scope('scope_filial'):
-            filial = inp("Digite a FILIAL：", type=NUMBER)
+            filial = inp("Digite a FILIAL：", type=TEXT)
             if filial is None:
                 clear("scope_filial")
                 toast("Filial incorreto.", position="center", color="error")
                 InterfaceUsuario.ask_filial(json)
                 return
-            json.set('filial', filial)
+            json.set('filial', str(filial))
             json.write()
 
     def ask_file(self):

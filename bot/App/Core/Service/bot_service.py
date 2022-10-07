@@ -47,7 +47,7 @@ class BotService:
         pyautogui.moveTo(self.COMPONENTES.input_filial['x'], self.COMPONENTES.input_filial['y'])
         pyautogui.click()
         pyautogui.click()
-        pyautogui.write(self.FILIAL)
+        pyautogui.write(str(self.FILIAL))
 
         time.sleep(self.TEMPO_ENTRE_ACOES)
 
@@ -191,16 +191,24 @@ class BotService:
             pyautogui.hotkey('down')
             index += 1
             contador_repetidos += 1
-            self.encontrar_produto_quantidade_menor(index, clipboard, contador_repetidos)
+            return self.encontrar_produto_quantidade_menor(index, clipboard, contador_repetidos, dict_menor_valor)
+            
 
         p = clipboard.split('.')
         qtd = int(p[1])
-        if qtd < dict_menor_valor[1]:
-            dict_menor_valor[0] = index
-            dict_menor_valor[1] = qtd
+        if dict_menor_valor:
+            if qtd < dict_menor_valor[1] and qtd != 0:
+                dict_menor_valor[0] = index
+                dict_menor_valor[1] = qtd
+        else:
+            if qtd != 0:
+                dict_menor_valor[0] = index
+                dict_menor_valor[1] = qtd
 
         pyautogui.hotkey('down')
-        self.encontrar_produto_quantidade_menor(index, clipboard, 0)
+        index += 1
+        return self.encontrar_produto_quantidade_menor(index, clipboard, 0, dict_menor_valor)
+        
 
     @staticmethod
     def configurar_componentes():

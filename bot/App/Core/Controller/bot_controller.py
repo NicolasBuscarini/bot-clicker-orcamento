@@ -1,4 +1,5 @@
 import time
+import pyautogui
 
 import pygetwindow as pygetwindow
 
@@ -25,7 +26,7 @@ class BotController:
     def initialize_bot(self):
         try:
             self.interface_grafica.initial()
-            BotController.trocar_janela('Protheus')
+            pyautogui.hotkey('alt', 'tab')
             self.__bot.execute()
             BotController.trocar_janela('PyWebIO')
             self.interface_grafica.final()

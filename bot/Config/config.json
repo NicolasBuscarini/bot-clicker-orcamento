@@ -1,6 +1,6 @@
 {
-    "filial": 101,
-    "tempoEntreAcoes": 5,
+    "filial": "0101",
+    "tempoEntreAcoes": 1,
     "caracteresIndesejados": "!@#$%/",
     "componentes": {
         "inputFilial": {
