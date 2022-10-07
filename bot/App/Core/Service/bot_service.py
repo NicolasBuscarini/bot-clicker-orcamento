@@ -201,3 +201,10 @@ class BotService:
 
         pyautogui.hotkey('down')
         self.encontrar_produto_quantidade_menor(index, clipboard, 0)
+
+    @staticmethod
+    def configurar_componentes():
+        """
+            Configura os componentes da tela do sistema
+        """
+        pyautogui.locateOnScreen()

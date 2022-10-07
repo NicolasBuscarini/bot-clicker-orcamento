@@ -46,3 +46,9 @@ class BotController:
             time.sleep(1)
         except IndexError:
             raise IndexError(f'Não foi possível encontrar a janela do {janela}. Verifique se a janela está aberta.')
+
+    def configurar_componentes(self):
+        try:
+            self.__bot.configurar_componentes()
+        except Exception as e:
+            raise Exception("Componentes não encontrados. Verifique se a tela de orçamento está aberta.")
