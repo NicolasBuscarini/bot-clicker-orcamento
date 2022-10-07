@@ -1,8 +1,5 @@
-import time
-
 from bot.App.Core.Controller.bot_controller import BotController
 from bot.App.Util.json_util import JsonUtil
-from bot.App.Presentation.usuario_presentation import InterfaceUsuario
 
 paths = {'config': 'Config/config.json', 'dicionario': 'Config/dicionario.json',
          'planilha_execucao': 'IO/Input/Execucao.xlsx', 'planilha_resultado': 'IO/Output/Resultado.xlsx'}

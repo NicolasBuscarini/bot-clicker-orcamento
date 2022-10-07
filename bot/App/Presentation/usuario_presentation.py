@@ -40,15 +40,20 @@ class InterfaceUsuario:
 
     def ask_file(self):
         """Ask for file"""
-        with use_scope('scope_file'):
-            f = file_upload("Upload o arquivo", accept=".xlsx")
+        try:
+            with use_scope('scope_file'):
 
-            if not f or not f['filename'].endswith(".xlsx"):
-                clear("scope_file")
-                toast("File not found.", position="center", color="error")
-                self.ask_file()
-                return
-            open(self.path_planilha_execucao, 'wb').write(f['content'])
+                f = file_upload("Upload o arquivo", accept=".xlsx")
+
+                if not f or not f['filename'].endswith(".xlsx"):
+                    clear("scope_file")
+                    toast("File not found.", position="center", color="error")
+                    self.ask_file()
+                    return
+                open(self.path_planilha_execucao, 'wb').write(f['content'])
+        except PermissionError as e:
+            er = PermissionError("Erro ao enviar arquivo. Favor feche o arquivo e tente novamente.\n" + str(e))
+            raise er
 
     def final(self):
         """
@@ -63,7 +68,7 @@ class InterfaceUsuario:
             except FileNotFoundError:
                 er = FileNotFoundError("Erro gerando tabela de resultado. Favor tente novamente.\nNão foi encontrada a "
                                        "planilha para disponibilizar pro download")
-                InterfaceUsuario.error(er)
+                raise er
 
     @staticmethod
     def error(e: Exception):
