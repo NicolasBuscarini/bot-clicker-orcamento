@@ -171,7 +171,9 @@ class BotService:
             procura o produto com quantidade menor
         """
         # passou por todos os produtos e vai selecionar com a menor quantidade
-        if contador_repetidos == 6:
+        if contador_repetidos == 10:
+            if not dict_menor_valor:
+                return False
             for _ in range(0, index + 1):
                 pyautogui.hotkey('up')
             for _ in range(0, dict_menor_valor[0]):
@@ -187,7 +189,7 @@ class BotService:
             print('Algo deu errado, não foi possível encontrar o produto com menor quantidade. Favor revisar.')
             return False
 
-        if clipboard == anterior and contador_repetidos < 6:
+        if clipboard == anterior and contador_repetidos < 10:
             pyautogui.hotkey('down')
             index += 1
             contador_repetidos += 1
