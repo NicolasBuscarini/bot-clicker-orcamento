@@ -1,5 +1,5 @@
 import time
-import pyautogui
+import pywinauto
 
 import pygetwindow as pygetwindow
 
@@ -26,7 +26,7 @@ class BotController:
     def initialize_bot(self):
         try:
             self.interface_grafica.initial()
-            pyautogui.hotkey('alt', 'tab')
+            BotController.trocar_janela('TOTVS Manufatura')
             self.__bot.execute()
             BotController.trocar_janela('PyWebIO')
             self.interface_grafica.final()
@@ -37,15 +37,21 @@ class BotController:
             print(e)
 
     @staticmethod
+    def focus_to_window(window_title=None):
+        window = pygetwindow.getWindowsWithTitle(window_title)[0]
+        if window.isActive == False:
+            pywinauto.application.Application().connect(handle=window._hWnd).top_window().set_focus()
+
+    @staticmethod
     def trocar_janela(janela: str):
         """
         Troca a janela ativa para a janela passada como parâmetro.
         :param janela: Nome da janela que será aberta.
         """
         try:
-            pygetwindow.getWindowsWithTitle(janela)[0].activate()
+            BotController.focus_to_window(janela)
             time.sleep(1)
-        except IndexError:
+        except IndexError as e:
             raise IndexError(f'Não foi possível encontrar a janela do {janela}. Verifique se a janela está aberta.')
 
     def configurar_componentes(self):
