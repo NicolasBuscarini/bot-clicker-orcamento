@@ -1,8 +1,8 @@
-from bot.App.Core.Controller.bot_controller import BotController
-from bot.App.Util.json_util import JsonUtil
+from App.Core.Controller.bot_controller import BotController
+from App.Util.json_util import JsonUtil
 
 paths = {'config': 'Config/config.json', 'dicionario': 'Config/dicionario.json',
-         'planilha_execucao': 'IO/Input/Execucao.xlsx', 'planilha_resultado': 'IO/Output/Resultado.xlsx'}
+         'planilha_execucao': 'Assets/IO/Input/Execucao.xlsx', 'planilha_resultado': 'Assets/IO/Output/Resultado.xlsx'}
 
 
 def main():

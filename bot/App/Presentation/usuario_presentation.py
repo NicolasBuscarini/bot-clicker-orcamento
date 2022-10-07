@@ -3,7 +3,7 @@ import time
 from pywebio.input import input as inp, NUMBER, file_upload
 from pywebio.output import put_text, clear, toast, use_scope, put_file
 
-from bot.App.Util.json_util import JsonUtil
+from App.Util.json_util import JsonUtil
 
 
 class InterfaceUsuario:

@@ -2,9 +2,9 @@ import time
 
 import pygetwindow as pygetwindow
 
-from bot.App.Core.Service.bot_service import BotService
-from bot.App.Presentation.usuario_presentation import InterfaceUsuario
-from bot.App.Util.json_util import JsonUtil
+from App.Core.Service.bot_service import BotService
+from App.Presentation.usuario_presentation import InterfaceUsuario
+from App.Util.json_util import JsonUtil
 
 
 class BotController:

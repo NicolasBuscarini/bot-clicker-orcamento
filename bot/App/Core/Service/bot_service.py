@@ -3,9 +3,9 @@ import time
 import pyautogui
 import pyperclip
 
-from bot.App.Core.Model.componentes_model import ComponentesModel
-from bot.App.Core.Service.planilha_service import PlanilhaService
-from bot.App.Util.json_util import JsonUtil
+from App.Core.Model.componentes_model import ComponentesModel
+from App.Core.Service.planilha_service import PlanilhaService
+from App.Util.json_util import JsonUtil
 
 
 class BotService:
