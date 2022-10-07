@@ -195,7 +195,11 @@ class BotService:
             
 
         p = clipboard.split('.')
-        qtd = int(p[1])
+        try:
+            qtd = int(p[1])
+        except:
+            qtd = 0
+            
         if dict_menor_valor:
             if qtd < dict_menor_valor[1] and qtd != 0:
                 dict_menor_valor[0] = index
