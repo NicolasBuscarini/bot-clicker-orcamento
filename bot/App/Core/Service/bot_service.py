@@ -1,39 +1,31 @@
 import time
 
 import pyautogui
-import pygetwindow
 import pyperclip
 
-from bot.App.Model.componentes_model import Componentes
-from bot.App.Service.planilha_service import Planilha
+from bot.App.Core.Model.componentes_model import ComponentesModel
+from bot.App.Core.Service.planilha_service import PlanilhaService
 from bot.App.Util.json_util import JsonUtil
 
 
-class BotOrcamento:
+class BotService:
     def __init__(self, componentes, tempo_entre_acoes: float, caracteres_indesejados: str, filial: str,
                  dicionario_produtos: JsonUtil, path_planilha_execucao: str, path_planilha_resultado: str):
-        self.COMPONENTES = Componentes(componentes)
+        self.COMPONENTES = ComponentesModel(componentes)
         self.TEMPO_ENTRE_ACOES = tempo_entre_acoes
         self.CARACTERES_INDESEJADOS = caracteres_indesejados
         self.FILIAL = filial
         self.DICIONARIO_PRODUTOS = dicionario_produtos
-        self.planilha = Planilha(path_planilha_execucao, path_planilha_resultado)
+        self.planilha = PlanilhaService(path_planilha_execucao, path_planilha_resultado)
 
         self.produto_atual = 'null'
         self.descricao_atual = 'null'
         self.produto_anterior = 'null'
 
-    def initialize(self):
+    def execute(self):
         """
             Executa o bot de orçamento
         """
-        # TROCA DE JANELA DO WINDOWS
-        try:
-            pygetwindow.getWindowsWithTitle('PROTHEUS')[0].activate()
-        except IndexError:
-            raise IndexError('Não foi possível encontrar a janela do PROTHEUS. Verifique se a janela está aberta.')
-        # self.alt_tab()
-
         # Preenche campos de filial
         self.ajustar_filial()
 
@@ -109,7 +101,7 @@ class BotOrcamento:
 
         time.sleep(self.TEMPO_ENTRE_ACOES)
 
-    def iniciar_pesquisa_planilha(self, planilha: Planilha):
+    def iniciar_pesquisa_planilha(self, planilha: PlanilhaService):
         """
             Inicia a pesquisa na planilha de cada produto
         """
@@ -150,9 +142,9 @@ class BotOrcamento:
             pyautogui.hotkey('enter')
             pyautogui.hotkey('alt', 's')
 
-        self.descricao_atual = BotOrcamento.get_clipboard()
+        self.descricao_atual = BotService.get_clipboard()
         pyautogui.hotkey('left')
-        self.produto_atual = BotOrcamento.get_clipboard()
+        self.produto_atual = BotService.get_clipboard()
 
         if self.produto_atual == self.produto_anterior or self.produto_atual == '' or self.produto_atual is None:
             self.planilha.adicionar_dados_tabela_resultado(produto_planilha, qtd_planilha, False)
@@ -189,7 +181,7 @@ class BotOrcamento:
         if dict_menor_valor is None:
             dict_menor_valor = dict()
 
-        clipboard = BotOrcamento.get_clipboard()
+        clipboard = BotService.get_clipboard()
 
         if clipboard == "" or clipboard is None:
             print('Algo deu errado, não foi possível encontrar o produto com menor quantidade. Favor revisar.')

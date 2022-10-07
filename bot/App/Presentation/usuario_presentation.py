@@ -1,3 +1,5 @@
+import time
+
 from pywebio.input import input as inp, NUMBER, file_upload
 from pywebio.output import put_text, clear, toast, use_scope, put_file
 
@@ -21,6 +23,7 @@ class InterfaceUsuario:
         put_text("O bot irá iniciar... Mantenha está janela aberta e não utilize seu teclado nem mouse até que o bot "
                  "termine.")
         put_text("Para interromper o bot mova o mouse para um dos cantos da tela.")
+        time.sleep(3)
 
     @staticmethod
     def ask_filial(json: JsonUtil):

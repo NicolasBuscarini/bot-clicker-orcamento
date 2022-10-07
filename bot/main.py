@@ -1,21 +1,19 @@
 import time
 
-from bot.App.Service.botorcamento_service import BotOrcamento
+from bot.App.Core.Controller.bot_controller import BotController
 from bot.App.Util.json_util import JsonUtil
-from bot.App.InterfaceGrafica.usuario_interfacegrafica import InterfaceUsuario
+from bot.App.Presentation.usuario_presentation import InterfaceUsuario
 
-PATH_CONFIG = 'Config/config.json'
-PATH_DICIONARIO = 'Config/dicionario.json'
-PATH_PLANILHA_EXECUCAO = 'Excel/Execucao.xlsx'
-PATH_PLANILHA_RESULTADO = 'Excel/Resultado.xlsx'
+paths = {'config': 'Config/config.json', 'dicionario': 'Config/dicionario.json',
+         'planilha_execucao': 'IO/Input/Execucao.xlsx', 'planilha_resultado': 'IO/Output/Resultado.xlsx'}
 
 
 def main():
     # FAZENDO LEITURA DA CONFIGURAÇÃO
-    config_json = JsonUtil(PATH_CONFIG)
+    config_json = JsonUtil(paths['config'])
 
     # FAZENDO LEITURA DO DICIONARIO DE PRODUTOS
-    dicionario_produtos = JsonUtil(PATH_DICIONARIO)
+    dicionario_produtos = JsonUtil(paths['dicionario'])
 
     # Pegando dados do config.json
     componentes = config_json.get('componentes')
@@ -23,22 +21,10 @@ def main():
     caracteres_indesejados = config_json.get('caracteresIndesejados')
     filial = config_json.get('filial')
 
-    interface_grafica = InterfaceUsuario(path_config=PATH_CONFIG, path_planilha_execucao=PATH_PLANILHA_EXECUCAO,
-                                         path_planilha_resultado=PATH_PLANILHA_RESULTADO)
-    interface_grafica.initial()
-    time.sleep(3)
-
     # INICIANDO BOT
-    try:
-        bot = BotOrcamento(componentes, tempo_entre_acoes, caracteres_indesejados, filial, dicionario_produtos,
-                           PATH_PLANILHA_EXECUCAO, PATH_PLANILHA_RESULTADO)
-        bot.initialize()
-        interface_grafica.final()
-    except Exception as e:
-        interface_grafica.error(e)
-        print("#" * 50)
-        print('Erro ao executar o bot. Verifique se o programa está aberto e tente novamente.')
-        print(e)
+    controller = BotController(componentes, tempo_entre_acoes, caracteres_indesejados,
+                               filial, dicionario_produtos, paths)
+    controller.initialize_bot()
 
 
 if __name__ == '__main__':

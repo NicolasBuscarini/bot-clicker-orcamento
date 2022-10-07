@@ -1,7 +1,7 @@
 import pandas as pd
 
 
-class Planilha:
+class PlanilhaService:
     def __init__(self, path_execucao: str, path_resultado: str):
         """
             Inicializa a planilha leitura da tabela Execucao e limpa tabela de Resultado criando uma nova
