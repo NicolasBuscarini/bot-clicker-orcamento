@@ -1,0 +1,19 @@
+{
+    "filial": 101,
+    "tempoEntreAcoes": 5,
+    "caracteresIndesejados": "!@#$%/",
+    "componentes": {
+        "inputFilial": {
+            "x": 284,
+            "y": 292
+        },
+        "inputDescricao": {
+            "x": 590,
+            "y": 292
+        },
+        "columnDescricao": {
+            "x": 495,
+            "y": 373
+        }
+    }
+}
