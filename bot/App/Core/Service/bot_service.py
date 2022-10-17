@@ -202,12 +202,30 @@ class BotService:
         except:
             qtd = 0
             
+        def verifica_armazem():
+            pyautogui.hotkey('right')
+            pyautogui.hotkey('right')
+            pyautogui.hotkey('right')
+            pyautogui.hotkey('right')
+            pyautogui.hotkey('right')
+            pyautogui.hotkey('right')
+            armazem = BotService.get_clipboard()
+            pyautogui.hotkey('left')
+            pyautogui.hotkey('left')
+            pyautogui.hotkey('left')
+            pyautogui.hotkey('left')
+            pyautogui.hotkey('left')
+            pyautogui.hotkey('left')
+            return False if 2 == int(armazem) else True
+
+                
         if dict_menor_valor:
-            if qtd < dict_menor_valor[1] and qtd != 0:
-                dict_menor_valor[0] = index
-                dict_menor_valor[1] = qtd
+            if qtd < dict_menor_valor[1] and qtd != 0 and qtd != 25000 and qtd != 50000:
+                if verifica_armazem():
+                    dict_menor_valor[0] = index
+                    dict_menor_valor[1] = qtd
         else:
-            if qtd != 0:
+            if qtd != 0 and verifica_armazem():
                 dict_menor_valor[0] = index
                 dict_menor_valor[1] = qtd
 
