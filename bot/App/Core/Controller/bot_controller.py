@@ -9,24 +9,20 @@ from App.Util.json_util import JsonUtil
 
 
 class BotController:
-    def __init__(self, componentes, tempo_entre_acoes: float, caracteres_indesejados: str, filial: str,
-                 dic_produtos: JsonUtil, paths: dict):
-        self.__bot = BotService(componentes,
-                                tempo_entre_acoes,
-                                caracteres_indesejados,
-                                filial,
-                                dic_produtos,
-                                paths['planilha_execucao'],
-                                paths['planilha_resultado'])
-
+    def __init__(self, dic_produtos: JsonUtil, paths: dict):
         self.interface_grafica = InterfaceUsuario(path_config=paths['config'],
                                                   path_planilha_execucao=paths['planilha_execucao'],
                                                   path_planilha_resultado=paths['planilha_resultado'])
+        self.dic_produtos = dic_produtos
+        self.paths = paths
 
     def initialize_bot(self):
         try:
             self.interface_grafica.initial()
             BotController.trocar_janela('TOTVS Manufatura')
+            self.__bot = BotService(
+                        self.dic_produtos,
+                        self.paths)
             self.__bot.execute()
             BotController.trocar_janela('PyWebIO')
             self.interface_grafica.final()

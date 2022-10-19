@@ -9,18 +9,24 @@ from App.Util.json_util import JsonUtil
 
 
 class BotService:
-    def __init__(self, componentes, tempo_entre_acoes: float, caracteres_indesejados: str, filial: str,
-                 dicionario_produtos: JsonUtil, path_planilha_execucao: str, path_planilha_resultado: str):
-        self.COMPONENTES = ComponentesModel(componentes)
-        self.TEMPO_ENTRE_ACOES = tempo_entre_acoes
-        self.CARACTERES_INDESEJADOS = caracteres_indesejados
-        self.FILIAL = filial
+    def __init__(self, dicionario_produtos: JsonUtil, paths: dict):
+        self.paths = paths
+        self.get_configs()
         self.DICIONARIO_PRODUTOS = dicionario_produtos
-        self.planilha = PlanilhaService(path_planilha_execucao, path_planilha_resultado)
+        self.planilha = PlanilhaService(paths['planilha_execucao'], paths['planilha_resultado'])
 
         self.produto_atual = 'null'
         self.descricao_atual = 'null'
         self.produto_anterior = 'null'
+
+    def get_configs(self):
+        """Pega dados do config.json"""
+        config_json = JsonUtil(self.paths['config'])
+
+        self.COMPONENTES = ComponentesModel(config_json.get('componentes'))
+        self.TEMPO_ENTRE_ACOES = config_json.get('tempoEntreAcoes')
+        self.CARACTERES_INDESEJADOS = config_json.get('caracteresIndesejados')
+        self.FILIAL = config_json.get('filial')
 
     def execute(self):
         """
@@ -55,6 +61,14 @@ class BotService:
         """'
             converte com o dicionario de nome de produtos
         """
+        def remover_espacos_no_final(produto_str):
+            if " " == produto_str[-1]:
+                produto_str = produto_str[:-1]
+                return remover_espacos_no_final(produto_str)
+            return produto_str
+
+        produto = remover_espacos_no_final(produto)
+
         resultado_dicionario = self.DICIONARIO_PRODUTOS.get(produto)
         return resultado_dicionario
 
@@ -166,10 +180,26 @@ class BotService:
         self.verificar_busca(produto_planilha, qtd_planilha)
 
     def encontrar_produto_quantidade_menor(self, index: int = 0, anterior: str = "null", contador_repetidos=0,
-                                           dict_menor_valor: dict = None):
+                                           dict_menor_valor: dict = None, primeiro_armazem_valido=True):
         """
             procura o produto com quantidade menor
         """
+        def verifica_armazem():
+            pyautogui.hotkey('right')
+            pyautogui.hotkey('right')
+            pyautogui.hotkey('right')
+            pyautogui.hotkey('right')
+            pyautogui.hotkey('right')
+            pyautogui.hotkey('right')
+            armazem = BotService.get_clipboard()
+            pyautogui.hotkey('left')
+            pyautogui.hotkey('left')
+            pyautogui.hotkey('left')
+            pyautogui.hotkey('left')
+            pyautogui.hotkey('left')
+            pyautogui.hotkey('left')
+            return False if 2 == int(armazem) else True                
+
         # passou por todos os produtos e vai selecionar com a menor quantidade
         if contador_repetidos == 10:
             if not dict_menor_valor:
@@ -189,11 +219,12 @@ class BotService:
             print('Algo deu errado, não foi possível encontrar o produto com menor quantidade. Favor revisar.')
             return False
 
-        if clipboard == anterior and contador_repetidos < 10:
-            pyautogui.hotkey('down')
-            index += 1
-            contador_repetidos += 1
-            return self.encontrar_produto_quantidade_menor(index, clipboard, contador_repetidos, dict_menor_valor)
+        if primeiro_armazem_valido: 
+            if clipboard == anterior and contador_repetidos < 10:
+                pyautogui.hotkey('down')
+                index += 1
+                contador_repetidos += 1
+                return self.encontrar_produto_quantidade_menor(index, clipboard, contador_repetidos, dict_menor_valor)
             
 
         p = clipboard.split('.')
@@ -202,36 +233,23 @@ class BotService:
         except:
             qtd = 0
             
-        def verifica_armazem():
-            pyautogui.hotkey('right')
-            pyautogui.hotkey('right')
-            pyautogui.hotkey('right')
-            pyautogui.hotkey('right')
-            pyautogui.hotkey('right')
-            pyautogui.hotkey('right')
-            armazem = BotService.get_clipboard()
-            pyautogui.hotkey('left')
-            pyautogui.hotkey('left')
-            pyautogui.hotkey('left')
-            pyautogui.hotkey('left')
-            pyautogui.hotkey('left')
-            pyautogui.hotkey('left')
-            return False if 2 == int(armazem) else True
-
-                
         if dict_menor_valor:
             if qtd < dict_menor_valor[1] and qtd != 0 and qtd != 25000 and qtd != 50000:
                 if verifica_armazem():
                     dict_menor_valor[0] = index
                     dict_menor_valor[1] = qtd
         else:
-            if qtd != 0 and verifica_armazem():
-                dict_menor_valor[0] = index
-                dict_menor_valor[1] = qtd
+            if qtd != 0:
+                if verifica_armazem():
+                    dict_menor_valor[0] = index
+                    dict_menor_valor[1] = qtd
+                    primeiro_armazem_valido = True
+                else:
+                    primeiro_armazem_valido = False
 
         pyautogui.hotkey('down')
         index += 1
-        return self.encontrar_produto_quantidade_menor(index, clipboard, 0, dict_menor_valor)
+        return self.encontrar_produto_quantidade_menor(index, clipboard, 0, dict_menor_valor, primeiro_armazem_valido)
         
 
     @staticmethod

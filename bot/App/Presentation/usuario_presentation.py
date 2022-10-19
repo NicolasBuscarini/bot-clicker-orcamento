@@ -50,7 +50,10 @@ class InterfaceUsuario:
                     toast("File not found.", position="center", color="error")
                     self.ask_file()
                     return
-                open(self.path_planilha_execucao, 'wb').write(f['content'])
+                file = open(self.path_planilha_execucao, 'wb')
+                file.write(f['content'])
+                file.close()
+                
         except PermissionError as e:
             er = PermissionError("Erro ao enviar arquivo. Favor feche o arquivo e tente novamente.\n" + str(e))
             raise er
